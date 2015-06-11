@@ -25,11 +25,12 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_speed = 0;
+            <string>view_object[0] = obj_Ship;
+image_speed = 0;
 image_index = 0;
 
-thrust = 1;             //Base warp acceleration per Second
-thrustScaling = 1.5;    //Thrust efficiency at higher speeds
+thrust = 5;             //Base warp acceleration per Second
+thrustScaling = 1.1;    //Thrust efficiency at higher speeds
 /*SHIP ACCELERATION MECHANICS
 At a given engine power, the time to accelerate can be calcaulated as;
 'time to next warp level' as T
@@ -39,9 +40,6 @@ At a given engine power, the time to accelerate can be calcaulated as;
 
 TIME TO NEXT WARP FACTOR IN SECONDS
 T = w*ts/th
-
-GET CURRENT ACCELERATION
-accel = 1/( (ts*(w+1))*th )
 */
 turnSpeed = 180;    //Base ship turn speed; deg/s
 turnScaling = 2;    //Turning efficiency at higher speeds
@@ -86,9 +84,15 @@ shipSpeed = 0;  //Current ship speed
 bearing -= time_factor*gamepad_axis_value(0,gp_axislh)*
     (turnSpeed/((warpSpeed+1)*turnScaling));
 //Acceleration
-//shipSpeed += gamepad_axis_value(0,gp_shoulderrb)*(
+shipSpeed += time_factor*gamepad_button_value(0,gp_shoulderrb)*
+(1/(((warpSpeed+1)*thrustScaling)/thrust));
+warpSpeed = floor(shipSpeed);
+if(warpSpeed&gt;maxWarp)warpSpeed = maxWarp;
 //Decceleration
 
+//Position/Rotation update
+x += lengthdir_x(shipSpeed,bearing);
+y += lengthdir_y(shipSpeed,bearing);
 image_angle = bearing;
 </string>
           </argument>
@@ -114,7 +118,8 @@ image_angle = bearing;
             <kind>1</kind>
             <string>draw_self();
 draw_set_color(c_white);
-draw_text(0,0,string(time_factor));
+draw_text(0,0,string(shipSpeed));
+draw_text(0,16,string(get_timer()/1000000));
 </string>
           </argument>
         </arguments>
