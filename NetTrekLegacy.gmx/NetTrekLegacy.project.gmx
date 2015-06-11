@@ -4,10 +4,45 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
-  <sprites name="sprites"/>
-  <backgrounds name="background"/>
+  <sounds name="sound">
+    <sound>sound\snd_MainTheme</sound>
+  </sounds>
+  <sprites name="sprites">
+    <sprite>sprites\spr_Planet</sprite>
+    <sprites name="Ships">
+      <sprite>sprites\spr_FederationShips</sprite>
+      <sprite>sprites\spr_RomulanShips</sprite>
+      <sprite>sprites\spr_KlingonShips</sprite>
+      <sprite>sprites\spr_OrionShips</sprite>
+      <sprite>sprites\spr_IndependentShips</sprite>
+    </sprites>
+    <sprites name="Menus">
+      <sprite>sprites\spr_Start</sprite>
+    </sprites>
+  </sprites>
+  <backgrounds name="background">
+    <background>background\bkg_Menu</background>
+  </backgrounds>
   <paths name="paths"/>
+  <objects name="objects">
+    <object>objects\obj_Menu</object>
+    <object>objects\obj_Debug</object>
+    <object>objects\obj_GameManager</object>
+    <object>objects\obj_Planet</object>
+    <objects name="Menus">
+      <object>objects\obj_Start</object>
+    </objects>
+    <object>objects\obj_AI</object>
+    <object>objects\obj_Ship</object>
+  </objects>
+  <rooms name="rooms">
+    <room>rooms\rm_Menu</room>
+    <room>rooms\rm_Concept</room>
+    <room>rooms\rm_GameCreation</room>
+  </rooms>
+  <constants number="1">
+    <constant name="STANDARD">0</constant>
+  </constants>
   <help>
     <rtf>help.rtf</rtf>
   </help>
