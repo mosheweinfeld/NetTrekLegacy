@@ -56,7 +56,7 @@ cameraY = 0;
 
 mapWidth = 65635;
 mapHeight = 65635;
-global.impulseMultiplier = 3;
+global.impulseMultiplier = 2;
 global.warpMultiplier = 5;
 
 rightPanelScale = 0.2;
