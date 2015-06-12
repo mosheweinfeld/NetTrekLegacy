@@ -281,17 +281,19 @@ with(obj_Planet){
 }
 if(instance_exists(obj_Player)){
     draw_set_color(TINFO[TEAM,2]);
-    draw_thickpoint(
+    draw_circle(
     floor(obj_Player.wx*obj_GameManager.minimapScale),
-    floor(obj_Player.wy*obj_GameManager.minimapScale)
+    floor(obj_Player.wy*obj_GameManager.minimapScale),
+    3,
+    false
     );
 }
 
 surface_reset_target();
 draw_set_color(c_white);
-draw_surface(minimapSurface,rpOffset,0);
+draw_surface(minimapSurface,rpOffset,minimapSize+14);
 
-draw_sprite(spr_RightPanel1,0,room_width,minimapSize);
+draw_sprite(spr_RightPanel1,0,room_width,minimapSize*2+14);
 
 //draw_text(16,0,string(floor(obj_Player.wx*obj_GameManager.minimapScale)));
 //draw_text(16,16,string(floor(obj_Player.wy*obj_GameManager.minimapScale)));
@@ -330,9 +332,9 @@ if(instance_exists(obj_Player)){
 
 surface_reset_target();
 draw_set_color(c_white);
-draw_surface(sectorSurface,rpOffset,minimapSize+14);
+draw_surface(sectorSurface,rpOffset,0);
 
-draw_sprite(spr_RightPanel2,0,room_width,minimapSize*2+14);
+draw_sprite(spr_RightPanel2,0,room_width,minimapSize);
 </string>
           </argument>
         </arguments>

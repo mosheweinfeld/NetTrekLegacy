@@ -25,6 +25,7 @@
     </sprites>
     <sprite>sprites\spr_Crosshair</sprite>
     <sprite>sprites\spr_Torpedo</sprite>
+    <sprite>sprites\spr_TorpedoExplosion</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bkg_Menu</background>

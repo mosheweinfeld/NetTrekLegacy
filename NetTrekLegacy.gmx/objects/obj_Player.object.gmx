@@ -60,6 +60,7 @@ warpTurn = 10;      //Warp turn efficiency
 CS = bt/(w+1)
 */
 maxWarp = 8;    //Max warp speed
+dropWarp = false;
 
 bearing = 0;    //Ship direction
 warpSpeed = 0;  //Ship warp speed
@@ -78,9 +79,11 @@ phaserCanShoot = true; //Can shoot
 phaserReload = 0;   //Reload timer for phaser
 
 //Torpedo
-torpedoMax = 8;
-torpedoCanShoot = true;
-torpedoSpeed = 0.99*global.impulseMultiplier;
+torpedoMax = 5;
+torpedoCount = torpedoMax;
+torpedoSpeed = global.impulseMultiplier;
+torpedoReloadRate = 1;  //Seconds per Torpedo
+torpedoReload = 0; 
 </string>
           </argument>
         </arguments>
@@ -107,24 +110,35 @@ torpedoSpeed = 0.99*global.impulseMultiplier;
 
     //Turning
     bearing -= gamepad_axis_value(0,gp_axislh)*tween(1,(turnSpeed/(warpSpeed+1))/warpTurn);
-    //Acceleration
-    shipSpeed += gamepad_button_value(0,gp_shoulderrb)*tween(((warpSpeed+1)*warpAccelScaling)/warpAccel,1);
-    if(warpSpeed&gt;maxWarp)warpSpeed = maxWarp;
-    //Decceleration
-    shipSpeed -= gamepad_button_value(0,gp_shoulderlb)*tween(1,warpAccel);
-    shipSpeed = max(min(shipSpeed,maxWarp),1);
-    warpSpeed = floor(shipSpeed);
     
-    if(gamepad_button_check_pressed(0,gp_stickl)&amp;&amp;shipSpeed == 1){
-        atWarp=false;
-        shipSpeed = 0.99;
+    if(dropWarp){
+        shipSpeed -= tween(1,warpAccel);
+    
+        if(shipSpeed &lt;= 1){
+            dropWarp=false;
+            atWarp=false;
+            shipSpeed = 0.99;
+        }
+    }else{
+    //Acceleration
+        shipSpeed += gamepad_button_value(0,gp_shoulderrb)*tween(((warpSpeed+1)*warpAccelScaling)/warpAccel,1);
+        if(warpSpeed&gt;maxWarp)warpSpeed = maxWarp;
+        //Decceleration
+        shipSpeed -= gamepad_button_value(0,gp_shoulderlb)*tween(1,warpAccel);
+        shipSpeed = max(min(shipSpeed,maxWarp),1);
+        warpSpeed = floor(shipSpeed);
     }
+    
+    if(gamepad_button_check_pressed(0,gp_stickl)){
+        dropWarp = true;
+    }
+    
     wx += lengthdir_x(shipSpeed*global.warpMultiplier,bearing);
     wy += lengthdir_y(shipSpeed*global.warpMultiplier,bearing);
 }else{
     
     //Warp Spinup
-    if(gamepad_button_value(0,gp_shoulderrb)&amp;&amp;gamepad_button_check(0,gp_stickl)){
+    if(gamepad_button_check(0,gp_stickl)){
         spinupProgress += global.time_factor;
         if(spinupProgress &gt;= warpSpinup){
             atWarp = true;
@@ -145,6 +159,7 @@ torpedoSpeed = 0.99*global.impulseMultiplier;
     wx += lengthdir_x(shipSpeed*global.impulseMultiplier,bearing);
     wy += lengthdir_y(shipSpeed*global.impulseMultiplier,bearing);
 
+    //Phasers
     if(gamepad_button_check(0,gp_shoulderr)&amp;&amp;phaserCanShoot){
         phaserCanShoot = false;
         phaserReload = phaserFireRate;
@@ -156,6 +171,22 @@ torpedoSpeed = 0.99*global.impulseMultiplier;
             phaserCanShoot = true;
         }else{
             phaserReload -= global.time_factor;
+        }
+    }
+    
+    //Torpedos
+    if(gamepad_button_check_pressed(0,gp_shoulderl)){
+        if(instance_number(obj_Torpedo)&lt;torpedoMax&amp;&amp;torpedoCount&gt;0){
+            torpedoCount-=1;
+            int = instance_create(wx,wy,obj_Torpedo);
+            int.spd = torpedoSpeed
+            int.dir = point_direction(0,0,gamepad_axis_value(0,gp_axisrh),gamepad_axis_value(0,gp_axisrv));
+        }
+    }else if(torpedoCount&lt;torpedoMax){
+        torpedoReload -= global.time_factor;
+        if(torpedoReload&lt;=0){
+            torpedoCount += 1;
+            torpedoReload = torpedoReloadRate;
         }
     }
 }
@@ -198,7 +229,7 @@ draw_set_color(c_white);
 if(gamepad_axis_value(0,gp_axisrh)!=0||gamepad_axis_value(0,gp_axisrv)!=0){
     var cdir = point_direction(0,0,gamepad_axis_value(0,gp_axisrh),gamepad_axis_value(0,gp_axisrv));
     
-    draw_sprite(spr_Crosshair,0,x+lengthdir_x(32,cdir),y+lengthdir_y(32,cdir));
+    draw_sprite_ext(spr_Crosshair,0,x+lengthdir_x(32,cdir),y+lengthdir_y(32,cdir),1,1,cdir,c_white,1);
 }
 </string>
           </argument>
