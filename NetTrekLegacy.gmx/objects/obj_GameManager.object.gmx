@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-999</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -45,10 +45,34 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>GAME_TYPE = STANDARD;
+            <string>global.partSystem = part_system_create();
 
-mapWidth = 10000;
-mapHeight = 10000;
+GAME_TYPE = STANDARD;
+
+time_factor = 0;
+
+cameraX = 0;
+cameraY = 0;
+
+mapWidth = 65635;
+mapHeight = 65635;
+global.impulseMultiplier = 3;
+global.warpMultiplier = 5;
+
+rightPanelScale = 0.2;
+rightPanelSize = 256;
+rpOffset = room_width-rightPanelSize;
+
+minimapSize = rightPanelSize;
+minimapScale = minimapSize/obj_GameManager.mapWidth;
+minimapSurface = surface_create(minimapSize,minimapSize);
+
+sensorRange = 5000;
+
+sectorMapSize = minimapSize;
+sectorMapScale = sectorMapSize/sensorRange;
+sectorSurface = surface_create(sectorMapSize,sectorMapSize);
+secHalf = sectorMapSize/2;
 
 planets = 40;
 planetsPerRow = 5;   //How many planets/columns are in each row of the board
@@ -97,6 +121,21 @@ gameTime = 0;
             <kind>1</kind>
             <string>//
 TEAMS = 4;
+TEAM = 1;
+
+TINFO[1,0] = "United Federation of Planets";//Team Name
+TINFO[1,1] = spr_FederationShips;           //Team Ships
+TINFO[1,2] = c_yellow;                      //Team Color
+TINFO[2,0] = "Klingon Empire";
+TINFO[2,1] = spr_KlingonShips;
+TINFO[2,2] = c_green;
+TINFO[3,0] = "Romulan Star Empire";
+TINFO[3,1] = spr_RomulanShips;
+TINFO[3,2] = c_red;
+TINFO[4,0] = "Orion Syndicate";
+TINFO[4,1] = spr_OrionShips;
+TINFO[4,2] = c_aqua;
+
 playersPerTeam = 10;
 </string>
           </argument>
@@ -170,6 +209,131 @@ for(var iy = 0;iy &lt; cols;iy++){
           <argument>
             <kind>1</kind>
             <string>Spawn Teams</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>global.time_factor = delta_time/1000000;
+
+if(instance_exists(obj_Player)){
+    cameraX = obj_Player.wx;
+    cameraY = obj_Player.wy;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>surface_set_target(minimapSurface);
+draw_set_font(fnt_smallFont);
+
+draw_set_color(c_teal);
+draw_rectangle(0,0,rpOffset,room_height,false);
+
+//DRAW QUADRANT AND SECTOR MAP
+
+draw_set_color(c_black);
+draw_rectangle(0,0,minimapSize,minimapSize,false);
+
+
+with(obj_Planet){
+    if(TEAM == noone){
+        draw_set_color(c_ltgray);
+        draw_circle(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale,4,false);
+    }else{
+        draw_set_color(obj_GameManager.TINFO[TEAM,2]);
+        draw_circle(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale,4,false);
+    }
+}
+if(instance_exists(obj_Player)){
+    draw_set_color(TINFO[TEAM,2]);
+    draw_thickpoint(
+    floor(obj_Player.wx*obj_GameManager.minimapScale),
+    floor(obj_Player.wy*obj_GameManager.minimapScale)
+    );
+}
+
+surface_reset_target();
+draw_set_color(c_white);
+draw_surface(minimapSurface,rpOffset,0);
+
+draw_sprite(spr_RightPanel1,0,room_width,minimapSize);
+
+//draw_text(16,0,string(floor(obj_Player.wx*obj_GameManager.minimapScale)));
+//draw_text(16,16,string(floor(obj_Player.wy*obj_GameManager.minimapScale)));
+
+surface_set_target(sectorSurface);
+draw_clear(c_black);
+
+if(instance_exists(obj_Player)){
+
+    with(obj_Planet){
+        var pdis = point_distance(obj_Player.wx,obj_Player.wy,wx,wy);
+        if(pdis&gt;obj_GameManager.sensorRange)continue;
+        var pdir = point_direction(obj_Player.wx,obj_Player.wy,wx,wy);
+        
+        if(TEAM == noone){
+            draw_set_color(c_ltgray);
+        }else{
+            draw_set_color(obj_GameManager.TINFO[TEAM,2]);
+        }
+        
+        draw_circle(obj_GameManager.secHalf+lengthdir_x(pdis*obj_GameManager.sectorMapScale,pdir),
+                obj_GameManager.secHalf+lengthdir_y(pdis*obj_GameManager.sectorMapScale,pdir)
+                ,4,false);
+    }
+    
+    draw_set_color(TINFO[TEAM,2]);
+    draw_circle(secHalf,secHalf,3,false);
+    
+    draw_set_color(c_yellow);
+    draw_line(secHalf,secHalf,
+    secHalf+lengthdir_x(secHalf,obj_Player.image_angle),
+    secHalf+lengthdir_y(secHalf,obj_Player.image_angle),
+    );
+
+}
+
+surface_reset_target();
+draw_set_color(c_white);
+draw_surface(sectorSurface,rpOffset,minimapSize+14);
+
+draw_sprite(spr_RightPanel2,0,room_width,minimapSize*2+14);
+</string>
           </argument>
         </arguments>
       </action>

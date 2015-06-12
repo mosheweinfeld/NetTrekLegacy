@@ -19,21 +19,40 @@
     <sprites name="Menus">
       <sprite>sprites\spr_Start</sprite>
     </sprites>
+    <sprites name="GUI">
+      <sprite>sprites\spr_RightPanel1</sprite>
+      <sprite>sprites\spr_RightPanel2</sprite>
+    </sprites>
+    <sprite>sprites\spr_Crosshair</sprite>
+    <sprite>sprites\spr_Torpedo</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bkg_Menu</background>
   </backgrounds>
   <paths name="paths"/>
+  <scripts name="scripts">
+    <script>scripts\tween.gml</script>
+    <script>scripts\draw_thickpoint.gml</script>
+  </scripts>
+  <fonts name="fonts">
+    <font>fonts\fnt_smallFont</font>
+  </fonts>
   <objects name="objects">
     <object>objects\obj_Menu</object>
     <object>objects\obj_Debug</object>
-    <object>objects\obj_GameManager</object>
-    <object>objects\obj_Planet</object>
     <objects name="Menus">
       <object>objects\obj_Start</object>
     </objects>
-    <object>objects\obj_AI</object>
-    <object>objects\obj_Ship</object>
+    <objects name="Game">
+      <object>objects\obj_GameManager</object>
+      <object>objects\WorldObject</object>
+      <object>objects\obj_Player</object>
+      <object>objects\obj_Planet</object>
+      <object>objects\obj_AI</object>
+      <object>objects\MinimapObject</object>
+      <object>objects\obj_Phaser</object>
+      <object>objects\obj_Torpedo</object>
+    </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_Menu</room>

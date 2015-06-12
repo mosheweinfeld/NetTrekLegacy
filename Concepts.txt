@@ -1,0 +1,12 @@
+Modes:
+Classic - Replica of the original Netrek game
+Classic+ - A slightly different version based of the classic Netrek game
+TrekOfDuty - Loadouts, Leveling, Killstreaks, see section for more detailss
+
+Classic+{
+
+Spawnable ship powerups on planets
+Graviton Pulse to knock ships out of warp
+
+
+}
