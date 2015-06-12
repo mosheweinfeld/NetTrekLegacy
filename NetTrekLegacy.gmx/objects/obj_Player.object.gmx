@@ -206,7 +206,7 @@ if(atWarp){
         if(instance_number(obj_Torpedo)&lt;torpedoMax&amp;&amp;torpedoCount&gt;0){
             torpedoCount-=1;
             int = instance_create(wx,wy,obj_Torpedo);
-            int.spd = torpedoSpeed
+            int.spd = torpedoSpeed;
             int.dir = point_direction(0,0,gamepad_axis_value(0,gp_axisrh),gamepad_axis_value(0,gp_axisrv));
         }
     }else if(torpedoCount&lt;torpedoMax){

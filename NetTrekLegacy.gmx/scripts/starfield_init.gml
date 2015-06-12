@@ -18,7 +18,7 @@
     var stars_medium           = stars_small / 8; // count of medium sized stars
 
     var stars_big_radius       = 8;           // radius in pixels for big stars    
-    var stars_big_have_shape   = true;        // if true, a little plus-shape will be drawn at the center of each big star. looks best stating at sizes from 10    
+    var stars_big_have_shape   = false;        // if true, a little plus-shape will be drawn at the center of each big star. looks best stating at sizes from 10    
     var stars_big              = stars_small / 300; // count of big stars
 
     var stars_color_inner      = c_white;     // color of star center (usually white)
@@ -29,7 +29,7 @@
     randomize(); // = each run a new randomness. deactivate or use seeds if you want reproducable results
     
     // New in version 1.1
-    var stars_size_fluctuation    = .5;       // amount of star size to randomize, 0 to disable. E.g. 0.5 means stars end up between 50% and 150% their default size
+    var stars_size_fluctuation    = 0.5;       // amount of star size to randomize, 0 to disable. E.g. 0.5 means stars end up between 50% and 150% their default size
     var star_clumping_probability = .85;      // value between 0 to 1, where 1 = all the smalls stars are in one clump, 0 = completely random
     var star_clumping_distance    = 40;       // neighborhood in pixels in which stars will be created if they clump
 
