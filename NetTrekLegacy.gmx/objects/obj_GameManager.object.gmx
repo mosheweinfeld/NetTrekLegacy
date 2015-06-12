@@ -127,15 +127,19 @@ TEAM = 1;
 TINFO[1,0] = "United Federation of Planets";//Team Name
 TINFO[1,1] = spr_FederationShips;           //Team Ships
 TINFO[1,2] = c_yellow;                      //Team Color
+TINFO[1,3] = "Earth";                       //Team Homeplanet
 TINFO[2,0] = "Klingon Empire";
 TINFO[2,1] = spr_KlingonShips;
 TINFO[2,2] = c_green;
+TINFO[2,3] = "Klingus";
 TINFO[3,0] = "Romulan Star Empire";
 TINFO[3,1] = spr_RomulanShips;
 TINFO[3,2] = c_red;
+TINFO[3,3] = "Romulus";
 TINFO[4,0] = "Orion Syndicate";
 TINFO[4,1] = spr_OrionShips;
 TINFO[4,2] = c_aqua;
+TINFO[4,3] = "Orion";
 
 playersPerTeam = 10;
 </string>
@@ -414,20 +418,25 @@ draw_rectangle(0,0,minimapSize,minimapSize,false);
 with(obj_Planet){
     if(TEAM == noone){
         draw_set_color(c_ltgray);
-        draw_circle(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale,4,false);
     }else{
         draw_set_color(obj_GameManager.TINFO[TEAM,2]);
-        draw_circle(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale,4,false);
     }
+    draw_circle(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale,3,false);
 }
 if(instance_exists(obj_Player)){
     draw_set_color(TINFO[TEAM,2]);
-    draw_circle(
-    floor(obj_Player.wx*obj_GameManager.minimapScale),
-    floor(obj_Player.wy*obj_GameManager.minimapScale),
-    3,
-    false
-    );
+    var tx = obj_Player.wx*obj_GameManager.minimapScale;
+    var ty = obj_Player.wy*obj_GameManager.minimapScale;
+    
+    draw_triangle(
+        tx+lengthdir_x(5,obj_Player.image_angle),
+        ty+lengthdir_y(5,obj_Player.image_angle),
+        tx+lengthdir_x(4,obj_Player.image_angle+135),
+        ty+lengthdir_y(4,obj_Player.image_angle+135),
+        tx+lengthdir_x(4,obj_Player.image_angle+225),
+        ty+lengthdir_y(4,obj_Player.image_angle+225),
+        false
+        );
 }
 
 surface_reset_target();
@@ -457,17 +466,19 @@ if(instance_exists(obj_Player)){
         
         draw_circle(obj_GameManager.secHalf+lengthdir_x(pdis*obj_GameManager.sectorMapScale,pdir),
                 obj_GameManager.secHalf+lengthdir_y(pdis*obj_GameManager.sectorMapScale,pdir)
-                ,4,false);
+                ,3,false);
     }
     
     draw_set_color(TINFO[TEAM,2]);
-    draw_circle(secHalf,secHalf,3,false);
-    
-    draw_set_color(c_yellow);
-    draw_line(secHalf,secHalf,
-    secHalf+lengthdir_x(secHalf,obj_Player.image_angle),
-    secHalf+lengthdir_y(secHalf,obj_Player.image_angle),
-    );
+    draw_triangle(
+        secHalf+lengthdir_x(5,obj_Player.image_angle),
+        secHalf+lengthdir_y(5,obj_Player.image_angle),
+        secHalf+lengthdir_x(4,obj_Player.image_angle+135),
+        secHalf+lengthdir_y(4,obj_Player.image_angle+135),
+        secHalf+lengthdir_x(4,obj_Player.image_angle+225),
+        secHalf+lengthdir_y(4,obj_Player.image_angle+225),
+        false
+        );
 
 }
 
@@ -476,6 +487,11 @@ draw_set_color(c_white);
 draw_surface(sectorSurface,rpOffset,0);
 
 draw_sprite(spr_RightPanel2,0,room_width,minimapSize);
+
+draw_set_color(c_lime);
+draw_line(rpOffset,0,rpOffset,room_height);
+draw_line(rpOffset,minimapSize,room_width,minimapSize);
+draw_line(rpOffset,minimapSize+14,room_width,minimapSize+14);
 </string>
           </argument>
         </arguments>

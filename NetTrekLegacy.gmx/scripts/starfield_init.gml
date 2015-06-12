@@ -8,17 +8,17 @@
 
 *********************************************************************************************/
     
-    var surface_width          = room_width;  // set the surface width here    
-    var surface_height         = room_height; // set the surface height here
+    var surface_width          = room_width*4;  // set the surface width here    
+    var surface_height         = room_height*4; // set the surface height here
  
     var stars_small_radius     = 1;           // radius in pixels for small stars
-    var stars_small            = 100;         // count of small stars
+    var stars_small            = 500;         // count of small stars
 
     var stars_medium_radius    = 2;           // radius in pixels for bigger stars    
     var stars_medium           = stars_small / 8; // count of medium sized stars
 
-    var stars_big_radius       = 8;           // radius in pixels for big stars    
-    var stars_big_have_shape   = false;        // if true, a little plus-shape will be drawn at the center of each big star. looks best stating at sizes from 10    
+    var stars_big_radius       = 10;           // radius in pixels for big stars    
+    var stars_big_have_shape   = true;        // if true, a little plus-shape will be drawn at the center of each big star. looks best stating at sizes from 10    
     var stars_big              = stars_small / 300; // count of big stars
 
     var stars_color_inner      = c_white;     // color of star center (usually white)
