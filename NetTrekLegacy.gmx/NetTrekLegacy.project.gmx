@@ -34,6 +34,8 @@
   <scripts name="scripts">
     <script>scripts\tween.gml</script>
     <script>scripts\draw_thickpoint.gml</script>
+    <script>scripts\starfield_init.gml</script>
+    <script>scripts\starfield_draw.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\fnt_smallFont</font>

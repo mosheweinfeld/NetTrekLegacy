@@ -87,6 +87,11 @@ torpedoSpeed = global.impulseMultiplier;
 torpedoReloadRate = 1;  //Seconds per Torpedo
 torpedoReload = 0; 
 
+//Shield
+shieldCapacity = 100;
+shieldPower = shieldCapacity;
+shieldOn = false;
+
 //Orbit
 orbitPlanet = noone;
 orbitAngle = 0;
@@ -112,7 +117,12 @@ orbitAngle = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(orbitPlanet!=noone){
+            <string>//Shields
+if(gamepad_button_check_pressed(0,gp_face4)){
+    shieldOn = !shieldOn;
+}
+
+if(orbitPlanet!=noone){
     orbitAngle += global.time_factor*10;
     ix = orbitPlanet.wx+lengthdir_x(64,orbitAngle);
     iy = orbitPlanet.wy+lengthdir_y(64,orbitAngle);
@@ -248,9 +258,17 @@ if(wy &lt; 0)wy += obj_GameManager.mapHeight;
             <kind>1</kind>
             <string>draw_self();
 draw_set_color(c_white);
-//draw_text(32,0,string(gamepad_button_value(0,gp_shoulderrb)));
+draw_text(32,8,string(gamepad_axis_value(0,gp_axisrh)));
+draw_text(32,24,string(gamepad_axis_value(0,gp_axisrv)));
 //draw_text(32,16,string(shipSpeed));
 //draw_text(32,32,string(warpSpeed));
+
+if(shieldOn){
+
+    draw_set_color(c_aqua);
+    draw_circle(x,y,20,true);
+
+}
 
 if(gamepad_axis_value(0,gp_axisrh)!=0||gamepad_axis_value(0,gp_axisrv)!=0){
     var cdir = point_direction(0,0,gamepad_axis_value(0,gp_axisrh),gamepad_axis_value(0,gp_axisrv));
