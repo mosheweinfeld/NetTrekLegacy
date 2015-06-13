@@ -41,7 +41,9 @@ thrust = 1;    //Base thrust acceleration per second
 
 warpSpinup = 5;             //Base spinup time for warp in Seconds
 warpAccel = 5;             //Base warp acceleration per Second
-warpAccelScaling = 1.1;    //Thrust efficiency at higher speeds
+warpAccelScaling = 2.0;    //Thrust efficiency at higher speeds
+//each warp level takes '(warpSpeed * warpAccelScaling) / warpAccel' seconds
+
 /*SHIP ACCELERATION MECHANICS
 At a given engine power, the time to accelerate can be calcaulated as;
 'time to next warp level' as T
@@ -147,10 +149,10 @@ if(atWarp){
         }
     }else{
     //Acceleration
-        shipSpeed += gamepad_button_value(0,gp_shoulderrb)*tween(((warpSpeed+1)*warpAccelScaling)/warpAccel,1);
-        if(warpSpeed&gt;maxWarp)warpSpeed = maxWarp;
+        shipSpeed += gamepad_button_value(0,gp_shoulderrb)*tween((warpSpeed*warpAccelScaling)/warpAccel,1);
+        if(shipSpeed&gt;maxWarp)shipSpeed = maxWarp;
         //Decceleration
-        shipSpeed -= gamepad_button_value(0,gp_shoulderlb)*tween(1,warpAccel);
+        shipSpeed -= gamepad_button_value(0,gp_shoulderlb)*tween(sqrt(warpSpeed),warpAccel);
         shipSpeed = max(min(shipSpeed,maxWarp),1);
         warpSpeed = floor(shipSpeed);
     }
@@ -160,8 +162,8 @@ if(atWarp){
         dropWarp = true;
     }
     
-    wx += lengthdir_x(shipSpeed*global.warpMultiplier,bearing);
-    wy += lengthdir_y(shipSpeed*global.warpMultiplier,bearing);
+    wx += lengthdir_x(shipSpeed*(global.warpMultiplier+warpSpeed*global.warpFactorMultiplier),bearing);
+    wy += lengthdir_y(shipSpeed*(global.warpMultiplier+warpSpeed*global.warpFactorMultiplier),bearing);
 }else{
     
     //Warp Spinup
@@ -170,6 +172,7 @@ if(atWarp){
         if(spinupProgress &gt;= warpSpinup){
             atWarp = true;
             shipSpeed = 1;
+            warpSpeed = 1;
             spinupProgress = 0;
         }
     }else{
@@ -273,6 +276,9 @@ if(wy&gt;obj_GameManager.mapHeight||wy&lt;0){
             <kind>1</kind>
             <string>draw_self();
 draw_set_color(c_white);
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
+draw_text(16,8,string(warpSpeed));
 draw_text(32,8,string(wx)+","+string(wy));
 //draw_text(32,16,string(shipSpeed));
 //draw_text(32,32,string(warpSpeed));

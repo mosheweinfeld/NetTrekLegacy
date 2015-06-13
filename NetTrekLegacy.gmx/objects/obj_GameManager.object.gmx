@@ -58,7 +58,8 @@ cameraY = 0;
 mapWidth = 65635;
 mapHeight = 65635;
 global.impulseMultiplier = 3;
-global.warpMultiplier = 10;
+global.warpMultiplier = 5;
+global.warpFactorMultiplier = 1.25;
 
 rightPanelScale = 0.2;
 rightPanelSize = 256;
@@ -68,7 +69,7 @@ minimapSize = rightPanelSize;
 minimapScale = minimapSize/obj_GameManager.mapWidth;
 minimapSurface = surface_create(minimapSize,minimapSize);
 
-sensorRange = 5000;
+sensorRange = 10000;
 
 sectorMapSize = minimapSize;
 sectorMapScale = sectorMapSize/sensorRange;
@@ -502,7 +503,7 @@ with(obj_Planet){
     draw_text(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale+3,sname);
 }
 if(instance_exists(obj_Player)){
-    draw_set_color(TINFO[TEAM,2]);
+    draw_set_color(c_orange);
     var tx = obj_Player.wx*obj_GameManager.minimapScale;
     var ty = obj_Player.wy*obj_GameManager.minimapScale;
     
@@ -540,16 +541,16 @@ if(instance_exists(obj_Player)){
         
         draw_circle(obj_GameManager.secHalf+lengthdir_x(pdis*obj_GameManager.sectorMapScale,pdir),
                 obj_GameManager.secHalf+lengthdir_y(pdis*obj_GameManager.sectorMapScale,pdir)
-                ,5,false);
+                ,7,true);
                 
         draw_set_color(c_white);
         draw_text(obj_GameManager.secHalf+lengthdir_x(pdis*obj_GameManager.sectorMapScale,pdir),
-                obj_GameManager.secHalf+lengthdir_y(pdis*obj_GameManager.sectorMapScale,pdir)+5,
+                obj_GameManager.secHalf+lengthdir_y(pdis*obj_GameManager.sectorMapScale,pdir)+7,
                 sname
                 );
     }
     
-    draw_set_color(TINFO[TEAM,2]);
+    draw_set_color(c_orange);
     draw_triangle(
         secHalf+lengthdir_x(5,obj_Player.image_angle),
         secHalf+lengthdir_y(5,obj_Player.image_angle),
@@ -557,7 +558,7 @@ if(instance_exists(obj_Player)){
         secHalf+lengthdir_y(4,obj_Player.image_angle+135),
         secHalf+lengthdir_x(4,obj_Player.image_angle+225),
         secHalf+lengthdir_y(4,obj_Player.image_angle+225),
-        false
+        true
         );
 
 }
@@ -568,7 +569,7 @@ draw_surface(sectorSurface,rpOffset,0);
 
 draw_sprite(spr_RightPanel2,0,room_width,minimapSize);
 
-draw_set_color(c_lime);
+draw_set_color(c_orange);
 draw_line(rpOffset,0,rpOffset,room_height);
 draw_line(rpOffset,minimapSize,room_width,minimapSize);
 draw_line(rpOffset,minimapSize+14,room_width,minimapSize+14);

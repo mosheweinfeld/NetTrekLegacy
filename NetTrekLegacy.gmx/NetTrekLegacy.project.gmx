@@ -91,6 +91,7 @@
       <object>objects\MinimapObject</object>
       <object>objects\obj_Phaser</object>
       <object>objects\obj_Torpedo</object>
+      <object>objects\obj_OtherShip</object>
     </objects>
   </objects>
   <rooms name="rooms">
@@ -98,13 +99,19 @@
     <room>rooms\rm_Concept</room>
     <room>rooms\rm_GameCreation</room>
   </rooms>
-  <constants number="6">
-    <constant name="NEUTRAL">0</constant>
+  <constants number="12">
     <constant name="STANDARD">0</constant>
+    <constant name="NEUTRAL">0</constant>
     <constant name="FEDERATION">1</constant>
     <constant name="KLINGON">2</constant>
     <constant name="ROMULAN">3</constant>
     <constant name="ORION">4</constant>
+    <constant name="SCOUT">1</constant>
+    <constant name="DESTROYER">2</constant>
+    <constant name="CRUISER">3</constant>
+    <constant name="BATTLESHIP">4</constant>
+    <constant name="ASSAULT">5</constant>
+    <constant name="STARBASE">6</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>
