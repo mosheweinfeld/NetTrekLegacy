@@ -58,7 +58,7 @@ cameraY = 0;
 mapWidth = 65635;
 mapHeight = 65635;
 global.impulseMultiplier = 3;
-global.warpMultiplier = 5;
+global.warpMultiplier = 10;
 
 rightPanelScale = 0.2;
 rightPanelSize = 256;
@@ -80,6 +80,9 @@ planetsPerRow = 5;   //How many planets/columns are in each row of the board
 planetWiggle = (mapWidth/planetsPerRow)/2; //Maximum distance a planet can drift from its placement position
 
 gameTime = 0;
+
+global.xOffset = (room_width-rightPanelSize)/2;
+global.yOffset = room_height/2;
 </string>
           </argument>
         </arguments>
@@ -124,6 +127,7 @@ gameTime = 0;
 TEAMS = 4;
 TEAM = 1;
 
+TINFO[0,2] = c_white;
 TINFO[1,0] = "United Federation of Planets";//Team Name
 TINFO[1,1] = spr_FederationShips;           //Team Ships
 TINFO[1,2] = c_yellow;                      //Team Color
@@ -182,32 +186,33 @@ playersPerTeam = 4;
 px = mapWidth/planetsPerRow;
 py = mapHeight/cols;
 
-f = file_text_open_read("Planet.txt");
+f1 = file_text_open_read("PlanetNames.txt");
+f2 = file_text_open_read("PlanetLocations.txt");
 
-var i,ii;
-i = 0;
-ii = 1;
+var i;
+i = 1;
 
-while(!file_text_eof(f)){
-    
+while(!file_text_eof(f1)){    
     p = instance_create(0,0,obj_Planet);
     
-    p.name = file_text_read_string(f);
-    file_text_readln(f);
-    p.wx = file_text_read_real(f);
-    file_text_readln(f);
-    p.wy = file_text_read_real(f);
-    file_text_readln(f);
+    p.name = file_text_read_string(f1);
+    file_text_readln(f1);
+    p.sname = file_text_read_string(f1);
+    file_text_readln(f1);
+    p.wx = file_text_read_real(f2);
+    file_text_readln(f2);
+    p.wy = file_text_read_real(f2);
+    file_text_readln(f2);
     
     p.team = 0;
-    
-    if((i mod 10) == 0){
-        p.team = ii;
-        ii+=1;
+    if(i&lt;5){
+        p.team = i;
+        i+=1;
     }
-        
-    i+=1;
 }
+
+file_text_close(f1);
+file_text_close(f2);
 </string>
           </argument>
         </arguments>
@@ -398,6 +403,63 @@ if(instance_exists(obj_Player)){
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>Borders</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_set_color(c_red);
+var rh,rw;
+rh = room_height/2;
+rw = room_width/2;
+if(cameraY&lt;rh){
+    draw_line_width(0,-cameraY+global.yOffset,room_width,-cameraY+global.yOffset,3);
+}
+if(cameraX&lt;rw){
+    draw_line_width(-cameraX+global.xOffset,0,-cameraX+global.xOffset,room_height,3);
+}
+if(cameraY&gt;mapHeight-rh){
+    draw_line_width(0,mapHeight-cameraY+global.yOffset,room_width,mapHeight-cameraY+global.yOffset,3);
+}
+if(cameraX&gt;mapWidth-rw){
+    draw_line_width(mapWidth-cameraX+global.xOffset,0,mapWidth-cameraX+global.xOffset,room_height,3);
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>Right Panel</string>
           </argument>
         </arguments>
@@ -420,6 +482,8 @@ if(instance_exists(obj_Player)){
             <kind>1</kind>
             <string>surface_set_target(minimapSurface);
 draw_set_font(fnt_smallFont);
+draw_set_halign(fa_center);
+draw_set_valign(fa_top);
 
 draw_set_color(c_teal);
 draw_rectangle(0,0,rpOffset,room_height,false);
@@ -431,12 +495,11 @@ draw_rectangle(0,0,minimapSize,minimapSize,false);
 
 
 with(obj_Planet){
-    if(TEAM == noone){
-        draw_set_color(c_ltgray);
-    }else{
-        draw_set_color(obj_GameManager.TINFO[TEAM,2]);
-    }
-    draw_circle(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale,3,false);
+
+    draw_set_color(obj_GameManager.TINFO[team,2]);
+
+    draw_circle(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale,3,false);    
+    draw_text(wx*obj_GameManager.minimapScale,wy*obj_GameManager.minimapScale+3,sname);
 }
 if(instance_exists(obj_Player)){
     draw_set_color(TINFO[TEAM,2]);
@@ -473,15 +536,17 @@ if(instance_exists(obj_Player)){
         if(pdis&gt;obj_GameManager.sensorRange)continue;
         var pdir = point_direction(obj_Player.wx,obj_Player.wy,wx,wy);
         
-        if(TEAM == noone){
-            draw_set_color(c_ltgray);
-        }else{
-            draw_set_color(obj_GameManager.TINFO[TEAM,2]);
-        }
+        draw_set_color(obj_GameManager.TINFO[team,2]);
         
         draw_circle(obj_GameManager.secHalf+lengthdir_x(pdis*obj_GameManager.sectorMapScale,pdir),
                 obj_GameManager.secHalf+lengthdir_y(pdis*obj_GameManager.sectorMapScale,pdir)
-                ,3,false);
+                ,5,false);
+                
+        draw_set_color(c_white);
+        draw_text(obj_GameManager.secHalf+lengthdir_x(pdis*obj_GameManager.sectorMapScale,pdir),
+                obj_GameManager.secHalf+lengthdir_y(pdis*obj_GameManager.sectorMapScale,pdir)+5,
+                sname
+                );
     }
     
     draw_set_color(TINFO[TEAM,2]);

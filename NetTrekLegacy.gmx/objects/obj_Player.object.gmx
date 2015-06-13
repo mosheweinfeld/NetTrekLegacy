@@ -25,8 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>x = (room_width-obj_GameManager.rightPanelSize)/2;
-y = room_height/2;
+            <string>x = global.xOffset;
+y = global.yOffset;
 wx = 0;
 wy = 0;
 
@@ -229,11 +229,26 @@ if(atWarp){
 
 //Rotation update
 image_angle = bearing;
-//Bounds check
-if(wx &gt; obj_GameManager.mapWidth)wx -= obj_GameManager.mapWidth;
-if(wy &gt; obj_GameManager.mapHeight)wy -= obj_GameManager.mapHeight;
-if(wx &lt; 0)wx += obj_GameManager.mapWidth;
-if(wy &lt; 0)wy += obj_GameManager.mapHeight;
+if(wx&gt;obj_GameManager.mapWidth||wx&lt;0){
+    if(wx&lt;0){
+        wx=0;
+    }else{
+        wx = obj_GameManager.mapWidth;
+    }
+    bearing = point_direction(0,0,-lengthdir_x(1,bearing),lengthdir_y(1,bearing));
+    shipSpeed = 0.99;
+    atWarp = false;
+}
+if(wy&gt;obj_GameManager.mapHeight||wy&lt;0){
+    if(wy&lt;0){
+        wy=0;
+    }else{
+        wy = obj_GameManager.mapHeight;
+    }
+    bearing = point_direction(0,0,lengthdir_x(1,bearing),-lengthdir_y(1,bearing));
+    shipSpeed = 0.99;
+    atWarp = false;
+}
 </string>
           </argument>
         </arguments>
@@ -258,8 +273,7 @@ if(wy &lt; 0)wy += obj_GameManager.mapHeight;
             <kind>1</kind>
             <string>draw_self();
 draw_set_color(c_white);
-draw_text(32,8,string(gamepad_axis_value(0,gp_axisrh)));
-draw_text(32,24,string(gamepad_axis_value(0,gp_axisrv)));
+draw_text(32,8,string(wx)+","+string(wy));
 //draw_text(32,16,string(shipSpeed));
 //draw_text(32,32,string(warpSpeed));
 
