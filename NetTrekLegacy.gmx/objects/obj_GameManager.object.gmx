@@ -127,21 +127,17 @@ TEAM = 1;
 TINFO[1,0] = "United Federation of Planets";//Team Name
 TINFO[1,1] = spr_FederationShips;           //Team Ships
 TINFO[1,2] = c_yellow;                      //Team Color
-TINFO[1,3] = "Earth";                       //Team Homeplanet
 TINFO[2,0] = "Klingon Empire";
 TINFO[2,1] = spr_KlingonShips;
-TINFO[2,2] = c_green;
-TINFO[2,3] = "Klingus";
-TINFO[3,0] = "Romulan Star Empire";
+TINFO[2,2] = c_red;
+TINFO[3,0] = "Romulan Space Empire";
 TINFO[3,1] = spr_RomulanShips;
-TINFO[3,2] = c_red;
-TINFO[3,3] = "Romulus";
+TINFO[3,2] = c_aqua;
 TINFO[4,0] = "Orion Syndicate";
 TINFO[4,1] = spr_OrionShips;
-TINFO[4,2] = c_aqua;
-TINFO[4,3] = "Orion";
+TINFO[4,2] = c_green;
 
-playersPerTeam = 10;
+playersPerTeam = 4;
 </string>
           </argument>
         </arguments>
@@ -186,13 +182,32 @@ playersPerTeam = 10;
 px = mapWidth/planetsPerRow;
 py = mapHeight/cols;
 
+f = file_text_open_read("Planet.txt");
 
-for(var iy = 0;iy &lt; cols;iy++){
-    for(var ix = 0;ix &lt; planetsPerRow;ix++){
-        instance_create(ix*px+random(planetWiggle),iy*py+random(planetWiggle),obj_Planet);
+var i,ii;
+i = 0;
+ii = 1;
+
+while(!file_text_eof(f)){
+    
+    p = instance_create(0,0,obj_Planet);
+    
+    p.name = file_text_read_string(f);
+    file_text_readln(f);
+    p.wx = file_text_read_real(f);
+    file_text_readln(f);
+    p.wy = file_text_read_real(f);
+    file_text_readln(f);
+    
+    p.team = 0;
+    
+    if((i mod 10) == 0){
+        p.team = ii;
+        ii+=1;
     }
+        
+    i+=1;
 }
-
 </string>
           </argument>
         </arguments>
