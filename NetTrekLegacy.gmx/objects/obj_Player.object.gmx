@@ -27,8 +27,9 @@
             <kind>1</kind>
             <string>x = global.xOffset;
 y = global.yOffset;
-wx = 0;
-wy = 0;
+
+wx = 32500;
+wy = 32500;
 
 image_speed = 0;
 image_index = 0;
@@ -42,6 +43,8 @@ thrust = 1;    //Base thrust acceleration per second
 warpSpinup = 5;             //Base spinup time for warp in Seconds
 warpAccel = 5;             //Base warp acceleration per Second
 warpAccelScaling = 2.0;    //Thrust efficiency at higher speeds
+warpCooldown = 15;          //Time for the warp drive to be usable after use
+warpHeat = 0;
 //each warp level takes '(warpSpeed * warpAccelScaling) / warpAccel' seconds
 
 /*SHIP ACCELERATION MECHANICS
@@ -196,6 +199,7 @@ if(atWarp){
             dropWarp=false;
             atWarp=false;
             shipSpeed = 0.99;
+            warpHeat = warpCooldown;
         }
     }else{
     //Acceleration
@@ -217,8 +221,9 @@ if(atWarp){
 }else{
     
     //Warp Spinup
-    if(gamepad_button_check(0,gp_face3)){
+    if(gamepad_button_check(0,gp_face3)&amp;&amp;warpHeat&lt;=0){
         spinupProgress += global.time_factor;
+        shipSpeed -= tween(warpSpinup,shipSpeed);
         if(spinupProgress &gt;= warpSpinup){
             atWarp = true;
             shipSpeed = 1;
@@ -226,6 +231,7 @@ if(atWarp){
             spinupProgress = 0;
         }
     }else{
+        warpHeat -= global.time_factor;
         spinupProgress = max(0,spinupProgress-global.time_factor);
         
         //Turning
@@ -255,7 +261,7 @@ if(atWarp){
     }
     
     //Torpedos
-    if(gamepad_button_check_pressed(0,gp_shoulderl)){
+    if(gamepad_button_check_pressed(0,gp_stickl)){
         if(instance_number(obj_Torpedo)&lt;torpedoMax&amp;&amp;torpedoCount&gt;0){
             torpedoCount-=1;
             int = instance_create(wx,wy,obj_Torpedo);
@@ -344,6 +350,15 @@ draw_set_valign(fa_top);
 //draw_text(32,8,string(hullCurrent));
 //draw_text(32,16,string(shipSpeed));
 //draw_text(32,32,string(warpSpeed));
+
+if(spinupProgress&gt;0){
+    var p = spinupProgress/warpSpinup;
+    draw_set_color(c_blue);
+    draw_ellipse_color(x-20,y-(20*p),x+20,y+(20*p),
+    color_spectrum_pick(c_blue,c_white,sin(get_timer())),
+    color_spectrum_pick(c_white,c_blue,cos(get_timer())),
+    true);
+}
 
 if(shieldOn){
 

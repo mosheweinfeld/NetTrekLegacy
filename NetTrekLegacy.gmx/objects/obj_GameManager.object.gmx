@@ -58,8 +58,8 @@ cameraY = 0;
 mapWidth = 65635;
 mapHeight = 65635;
 global.impulseMultiplier = 3;
-global.warpMultiplier = 5;
-global.warpFactorMultiplier = 1.25;
+global.warpMultiplier = 3;
+global.warpFactorMultiplier = 1.2;
 
 rightPanelScale = 0.2;
 rightPanelSize = 256;
@@ -586,6 +586,7 @@ draw_set_color(c_orange);
 draw_line(rpOffset,0,rpOffset,room_height);
 draw_line(rpOffset,minimapSize,room_width,minimapSize);
 draw_line(rpOffset,minimapSize+14,room_width,minimapSize+14);
+draw_line(rpOffset,minimapSize*2+14,room_width,minimapSize*2+14);
 </string>
           </argument>
         </arguments>
