@@ -86,8 +86,11 @@ phaserReload = 0;   //Reload timer for phaser
 torpedoMax = 5;
 torpedoCount = torpedoMax;
 torpedoSpeed = global.impulseMultiplier;
-torpedoReloadRate = 1;  //Seconds per Torpedo
+torpedoReloadRate = 2;  //Seconds per Torpedo
 torpedoReload = 0; 
+for(var i = 0;i&lt;torpedoMax;i++){
+    torpedoBay[i]=true;
+}
 
 //Shield
 shieldCapacity = 100;
@@ -97,6 +100,51 @@ shieldOn = false;
 //Orbit
 orbitPlanet = noone;
 orbitAngle = 0;
+
+//Hull
+hullMax = 100;
+hullCurrent = hullMax;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Debug</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>team = 1;
 </string>
           </argument>
         </arguments>
@@ -119,7 +167,9 @@ orbitAngle = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Shields
+            <string>bearingPrevious = bearing;
+
+//Shields
 if(gamepad_button_check_pressed(0,gp_face4)){
     shieldOn = !shieldOn;
 }
@@ -158,7 +208,7 @@ if(atWarp){
     }
     
     //Warp Drop
-    if(gamepad_button_check_pressed(0,gp_select)){
+    if(gamepad_button_check_pressed(0,gp_face3)){
         dropWarp = true;
     }
     
@@ -167,7 +217,7 @@ if(atWarp){
 }else{
     
     //Warp Spinup
-    if(gamepad_button_check(0,gp_select)){
+    if(gamepad_button_check(0,gp_face3)){
         spinupProgress += global.time_factor;
         if(spinupProgress &gt;= warpSpinup){
             atWarp = true;
@@ -211,12 +261,24 @@ if(atWarp){
             int = instance_create(wx,wy,obj_Torpedo);
             int.spd = torpedoSpeed;
             int.dir = point_direction(0,0,gamepad_axis_value(0,gp_axisrh),gamepad_axis_value(0,gp_axisrv));
+            for(var i = 0;i &lt; torpedoMax;i++){
+                if(torpedoBay[i]){
+                    torpedoBay[i] = false;
+                    break;
+                }
+            }
         }
     }else if(torpedoCount&lt;torpedoMax){
         torpedoReload -= global.time_factor;
         if(torpedoReload&lt;=0){
             torpedoCount += 1;
             torpedoReload = torpedoReloadRate;
+            for(var i = 0;i &lt; torpedoMax;i++){
+                if(!torpedoBay[i]){
+                    torpedoBay[i] = true;
+                    break;
+                }
+            }
         }
     }
     
@@ -274,12 +336,12 @@ if(wy&gt;obj_GameManager.mapHeight||wy&lt;0){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_self();
+            <string>draw_sprite_ext(sprite_index,image_index,x,y,1,1,image_angle,obj_GameManager.TINFO[team,2],1);
 draw_set_color(c_white);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
-draw_text(16,8,string(warpSpeed));
-draw_text(32,8,string(wx)+","+string(wy));
+//draw_text(16,8,string(warpSpeed));
+//draw_text(32,8,string(hullCurrent));
 //draw_text(32,16,string(shipSpeed));
 //draw_text(32,32,string(warpSpeed));
 
@@ -294,6 +356,7 @@ if(gamepad_axis_value(0,gp_axisrh)!=0||gamepad_axis_value(0,gp_axisrv)!=0){
     var cdir = point_direction(0,0,gamepad_axis_value(0,gp_axisrh),gamepad_axis_value(0,gp_axisrv));
     
     draw_sprite_ext(spr_Crosshair,0,x+lengthdir_x(32,cdir),y+lengthdir_y(32,cdir),1,1,cdir,c_white,1);
+    
 }
 </string>
           </argument>

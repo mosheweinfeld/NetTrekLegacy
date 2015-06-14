@@ -58,6 +58,9 @@
     <sprites name="GUI">
       <sprite>sprites\spr_RightPanel1</sprite>
       <sprite>sprites\spr_RightPanel2</sprite>
+      <sprite>sprites\spr_Tactical</sprite>
+      <sprite>sprites\spr_PhaserBank</sprite>
+      <sprite>sprites\spr_TorpedoTube</sprite>
     </sprites>
     <sprite>sprites\spr_Crosshair</sprite>
     <sprite>sprites\spr_Torpedo</sprite>
@@ -72,6 +75,7 @@
     <script>scripts\draw_thickpoint.gml</script>
     <script>scripts\starfield_init.gml</script>
     <script>scripts\starfield_draw.gml</script>
+    <script>scripts\color_spectrum_pick.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\fnt_smallFont</font>

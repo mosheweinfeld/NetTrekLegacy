@@ -65,6 +65,9 @@ rightPanelScale = 0.2;
 rightPanelSize = 256;
 rpOffset = room_width-rightPanelSize;
 
+tacticalSize = sprite_get_width(spr_Tactical);
+tacticalOffset = rpOffset-tacticalSize;
+
 minimapSize = rightPanelSize;
 minimapScale = minimapSize/obj_GameManager.mapWidth;
 minimapSurface = surface_create(minimapSize,minimapSize);
@@ -82,7 +85,7 @@ planetWiggle = (mapWidth/planetsPerRow)/2; //Maximum distance a planet can drift
 
 gameTime = 0;
 
-global.xOffset = (room_width-rightPanelSize)/2;
+global.xOffset = (room_width-rightPanelSize-tacticalSize)/2;
 global.yOffset = room_height/2;
 </string>
           </argument>
@@ -550,6 +553,16 @@ if(instance_exists(obj_Player)){
                 );
     }
     
+    if(obj_Player.atWarp&amp;&amp;obj_Player.bearing!=obj_Player.bearingPrevious){
+        draw_set_color(c_blue);
+        draw_line(
+        secHalf,
+        secHalf,
+        secHalf+lengthdir_x(sensorRange,obj_Player.image_angle),
+        secHalf+lengthdir_y(sensorRange,obj_Player.image_angle)
+        );
+    }
+    
     draw_set_color(c_orange);
     draw_triangle(
         secHalf+lengthdir_x(5,obj_Player.image_angle),
@@ -573,6 +586,84 @@ draw_set_color(c_orange);
 draw_line(rpOffset,0,rpOffset,room_height);
 draw_line(rpOffset,minimapSize,room_width,minimapSize);
 draw_line(rpOffset,minimapSize+14,room_width,minimapSize+14);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Tactical</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_set_font(fnt_smallFont);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+
+draw_sprite(spr_Tactical,0,rpOffset,0);
+draw_set_colour(c_orange);
+draw_line(tacticalOffset,0,tacticalOffset,room_height);
+
+if(instance_exists(obj_Player)){
+    var hc = obj_Player.hullCurrent/obj_Player.hullMax;
+    var to = tacticalOffset+(tacticalSize/2);
+    
+    draw_sprite_ext(obj_Player.sprite_index,obj_Player.image_index,to,47,
+    1,1,0,color_spectrum_pick(c_lime,c_red,hc),1);
+    
+    draw_set_color(color_spectrum_pick(c_lime,c_red,obj_Player.shieldPower/obj_Player.shieldCapacity));
+    draw_circle(to,47,20,true);
+    
+    draw_set_color(c_white);
+    draw_text(tacticalOffset+56,76,string(obj_Player.shieldPower)+" / "+string(obj_Player.shieldCapacity));
+    draw_text(tacticalOffset+56,87,string(obj_Player.hullCurrent)+" / "+string(obj_Player.hullMax));
+    
+    draw_healthbar(tacticalOffset+5,117,tacticalOffset+tacticalSize-5,139,
+    (1-obj_Player.phaserReload/obj_Player.phaserFireRate)*100,c_white,c_white,c_yellow,0,false,false);
+    draw_sprite(spr_PhaserBank,0,to,128);
+    
+    for(var i = 0;i &lt; obj_Player.torpedoMax;i++){
+        if(obj_Player.torpedoBay[i]){
+            draw_rectangle_colour(tacticalOffset+5,145+(i*12),tacticalOffset+tacticalSize-5,155+(i*12),c_ltgray,c_white,c_ltgray,c_ltgray,false);
+        }else{
+            draw_healthbar(tacticalOffset+5,145+(i*12),tacticalOffset+tacticalSize-5,155+(i*12),
+            (1-obj_Player.torpedoReload/obj_Player.torpedoReloadRate)*100,c_dkgray,c_dkgray,c_ltgray,0,true,false);
+        }
+        draw_sprite(spr_TorpedoTube,0,to,150+(i*12));
+    }
+    
+    
+}
 </string>
           </argument>
         </arguments>
