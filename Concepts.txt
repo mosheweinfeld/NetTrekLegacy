@@ -1,12 +1,52 @@
 Modes:
-Classic - Replica of the original Netrek game
-Classic+ - A slightly different version based of the classic Netrek game
+Classic - Replica of the original Netrek game (Computer Only)
+Classic+ - A slightly different version based of the classic Netrek game (Cross Platform)
+War - A series of computer planned out battles that players must compete against.
 TrekOfDuty - Loadouts, Leveling, Killstreaks, see section for more detailss
 
 Classic+{
 
-Spawnable ship powerups on planets
-Graviton Pulse to knock ships out of warp
+Spawnable anomolies appear every 2 minutes in each sector that include;
+Planet Conquest Mission (Only when a neutral planet is available in the sector)
 
+
+Graviton Pulse to knock ships out of warp
+Long range sensor delay; upgradable (Not so much a feature as a compensation of bandwidth for the VOIP system)
 
 }
+
+TrekOfDuty{
+
+Pick a Faction for 'teams' (like terrorists or army in COD)
+Pick a Ship as the 'class'
+Instead of standard phasers, you pick a type of phaser
+{
+
+}
+Instead of photon torpedos, you pick a 'secondary weapon'
+{
+
+}
+Instead of Tractor/Repulsor, you pick a tertiary ability
+{
+Manipulator
+	{
+	Tractor Beam
+	Repulsor Beam
+	}
+
+Powerful Deflector
+	{
+	Graviton Pulse (Knocks ships without shields out of warp/disrupts warp bubble)
+	
+	}
+Subspace Vortex 
+	{
+	Quick Jump (After 2 seconds, jump 
+
+	}
+
+}
+
+Perks:
+Sensor Class+ - 

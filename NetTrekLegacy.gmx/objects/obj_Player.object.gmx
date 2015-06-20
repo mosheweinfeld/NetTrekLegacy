@@ -107,6 +107,9 @@ orbitAngle = 0;
 //Hull
 hullMax = 100;
 hullCurrent = hullMax;
+
+//Sensors
+sensorDelay = 1;
 </string>
           </argument>
         </arguments>
@@ -261,7 +264,7 @@ if(atWarp){
     }
     
     //Torpedos
-    if(gamepad_button_check_pressed(0,gp_stickl)){
+    if(gamepad_button_check_pressed(0,gp_shoulderl)){
         if(instance_number(obj_Torpedo)&lt;torpedoMax&amp;&amp;torpedoCount&gt;0){
             torpedoCount-=1;
             int = instance_create(wx,wy,obj_Torpedo);

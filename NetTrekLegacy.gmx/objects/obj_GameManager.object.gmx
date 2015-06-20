@@ -55,8 +55,8 @@ time_factor = 0;
 cameraX = 0;
 cameraY = 0;
 
-mapWidth = 65635;
-mapHeight = 65635;
+mapWidth = 100000;
+mapHeight = 100000;
 global.impulseMultiplier = 3;
 global.warpMultiplier = 3;
 global.warpFactorMultiplier = 1.2;
@@ -73,6 +73,9 @@ minimapScale = minimapSize/obj_GameManager.mapWidth;
 minimapSurface = surface_create(minimapSize,minimapSize);
 
 sensorRange = 10000;
+
+sensorSurfaceOld = surface_create(minimapSize,minimapSize);
+sensorSurfaceNew = surface_create(minimapSize,minimapSize);
 
 sectorMapSize = minimapSize;
 sectorMapScale = sectorMapSize/sensorRange;
@@ -203,9 +206,9 @@ while(!file_text_eof(f1)){
     file_text_readln(f1);
     p.sname = file_text_read_string(f1);
     file_text_readln(f1);
-    p.wx = file_text_read_real(f2);
+    p.wx = file_text_read_real(f2)*mapWidth;
     file_text_readln(f2);
-    p.wy = file_text_read_real(f2);
+    p.wy = file_text_read_real(f2)*mapHeight;
     file_text_readln(f2);
     
     p.team = 0;
@@ -302,6 +305,29 @@ file_text_close(f2);
         </arguments>
       </action>
     </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if(instance_exists(obj_Player))with(WorldObject)event_perform(ev_other, ev_user0);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="1">
       <action>
         <libid>1</libid>
@@ -326,6 +352,28 @@ if(instance_exists(obj_Player)){
     cameraY = obj_Player.wy;
 }
 </string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Sensor Update</string>
           </argument>
         </arguments>
       </action>
