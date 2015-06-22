@@ -1,0 +1,10 @@
+PRACTICE -> Starfleet Academy Training Manuel -> Tutorials
+ONLINE -> Party Lobby -> Match Options -> Matchmaking -> Game
+OPTIONS{
+Graphics
+Audio
+Gameplay
+Controls
+Return
+}
+EXIT
