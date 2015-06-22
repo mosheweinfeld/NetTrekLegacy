@@ -54,6 +54,7 @@
     </sprites>
     <sprites name="Menus">
       <sprite>sprites\spr_Start</sprite>
+      <sprite>sprites\spr_Devices</sprite>
     </sprites>
     <sprites name="GUI">
       <sprite>sprites\spr_RightPanel1</sprite>
@@ -81,6 +82,8 @@
     <font>fonts\fnt_smallFont</font>
   </fonts>
   <objects name="objects">
+    <object>objects\obj_Player</object>
+    <object>objects\obj_Lobby</object>
     <object>objects\obj_Menu</object>
     <object>objects\obj_Debug</object>
     <objects name="Menus">
@@ -89,7 +92,7 @@
     <objects name="Game">
       <object>objects\obj_GameManager</object>
       <object>objects\WorldObject</object>
-      <object>objects\obj_Player</object>
+      <object>objects\obj_Ship</object>
       <object>objects\obj_Planet</object>
       <object>objects\obj_AI</object>
       <object>objects\MinimapObject</object>
@@ -99,6 +102,8 @@
     </objects>
   </objects>
   <rooms name="rooms">
+    <room>rooms\rm_Title</room>
+    <room>rooms\rm_Lobby</room>
     <room>rooms\rm_Menu</room>
     <room>rooms\rm_Concept</room>
     <room>rooms\rm_GameCreation</room>

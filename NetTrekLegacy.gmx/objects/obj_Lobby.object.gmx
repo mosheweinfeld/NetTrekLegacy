@@ -25,13 +25,15 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>audio_play_sound(snd_MainTheme,1,true);
+            <string>playerList = ds_list_create();
+
+partyLeader = true;
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="3" enumb="0">
+    <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -48,7 +50,13 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(gamepad_button_check_pressed(0,gp_start)||keyboard_check_pressed(vk_anykey))room_goto_next();
+            <string>if(os_type == os_windows || os_type == os_macosx || os == os_linux){
+    draw_sprite(spr_Devices,0,0,sprite_get_height(spr_Devices));
+}
+var gp_num = gamepad_get_device_count();
+for (var i = 0; i &lt; gp_num; i++){
+    if(gamepad_is_connected(i))draw_sprite(spr_Devices,1,i*sprite_get_width(spr_Devices),0);
+}
 </string>
           </argument>
         </arguments>
