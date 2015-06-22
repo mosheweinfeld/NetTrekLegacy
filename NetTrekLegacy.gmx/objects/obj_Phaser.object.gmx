@@ -78,7 +78,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_line_colour(x,y,x+lengthdir_x(len,dir),y+lengthdir_y(len,dir),c_yellow,c_yellow);
+            <string>draw_line_colour(obj_Player.x,obj_Player.y,obj_Player.x+lengthdir_x(len,dir),obj_Player.y+lengthdir_y(len,dir),c_yellow,c_yellow);
 </string>
           </argument>
         </arguments>
