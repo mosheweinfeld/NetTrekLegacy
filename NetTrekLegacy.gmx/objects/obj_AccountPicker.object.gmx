@@ -25,122 +25,35 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>menu = false;
+            <string>items = ds_list_create();
 
-playerList = ds_list_create();
-deviceList = ds_list_create();
+f = file_text_open_read("Accounts.txt");
 
-partyLeader = true;
+while(!file_text_eof(f)){
+ds_list_add(items,file_text_read_string(f));
+file_text_readln(f);
+file_text_readln(f);
+}
 
-localPlayers = 0;
-remoteClients = ds_list_create();
-/*remoteClients
-ds_list_add(remoteClients,ds_list_create());
-Lists of lists containing remote players
-Each list represents a remote connection with its own local players
-*/
+file_text_close(f);
 
-orbit = 0;
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>rw = room_width/2;
+ds_list_add(items,"add account");
+ds_list_add(items,"create account");
+
+control = -1;
+value = 0;
+rows = 8;
+width = 160;
+height = 200;
+rowHeight = (height*2)/rows;
+rw = room_width/2;
 rh = room_height/2;
 </string>
           </argument>
         </arguments>
       </action>
-      <action>
-        <libid>1</libid>
-        <id>601</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_execute_script</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>9</kind>
-            <script>starfield_init</script>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string></string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string></string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string></string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string></string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string></string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>425</id>
-        <kind>4</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>debug</string>
-          </argument>
-        </arguments>
-      </action>
+    </event>
+    <event eventtype="1" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -157,33 +70,7 @@ rh = room_height/2;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>ds_list_add(remoteClients,ds_list_create());
-ds_list_add(remoteClients,ds_list_create());
-ds_list_add(remoteClients,ds_list_create());
-int = instance_create(0,0,obj_LobbyPlayer);
-int.name = "adfasdf";
-int.orbit = 0;
-ds_list_add(ds_list_find_value(remoteClients,0),int);
-int = instance_create(0,0,obj_LobbyPlayer);
-int.name = "adfasdf";
-int.orbit = 120;
-ds_list_add(ds_list_find_value(remoteClients,0),int);
-int = instance_create(0,0,obj_LobbyPlayer);
-int.name = "adfasdf";
-int.orbit = 240;
-ds_list_add(ds_list_find_value(remoteClients,0),int);
-int = instance_create(0,0,obj_LobbyPlayer);
-int.name = "adfasdf";
-int.orbit = 0;
-ds_list_add(ds_list_find_value(remoteClients,1),int);
-int = instance_create(0,0,obj_LobbyPlayer);
-int.name = "adfasdf";
-int.orbit = 0;
-ds_list_add(ds_list_find_value(remoteClients,2),int);
-int = instance_create(0,0,obj_LobbyPlayer);
-int.name = "adfasdf";
-int.orbit = 180;
-ds_list_add(ds_list_find_value(remoteClients,2),int);
+            <string>obj_Lobby.menu = false;
 </string>
           </argument>
         </arguments>
@@ -206,24 +93,167 @@ ds_list_add(ds_list_find_value(remoteClients,2),int);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(menu)exit;
-var gp_num = gamepad_get_device_count();
-for (var i = 0; i &lt; gp_num; i++){
-    if(gamepad_is_connected(i)&amp;&amp;gamepad_button_check_pressed(i,gp_start)){
-        if(ds_list_find_index(deviceList,"gamepad"+string(i))&lt;0){
-            ds_list_add(deviceList,"gamepad"+string(i));
-            menu = true;
-            int = instance_create(0,0,obj_AccountPicker);
-            int.control = i;
-        }
-    }
+            <string>if(gamepad_button_check_pressed(control,gp_padu)||keyboard_check_pressed(vk_up)){
+    value-=1;
+    if(value &lt; 0)value = ds_list_size(items)-1;
 }
 
-if(keyboard_check_pressed(vk_anykey)&amp;&amp;ds_list_find_index(deviceList,"keyboard")&lt;0){
-    ds_list_add(deviceList,"keyboard");
-    menu = true;
-    instance_create(0,0,obj_AccountPicker);
+if(gamepad_button_check_pressed(control,gp_padd)||keyboard_check_pressed(vk_down)){
+    value += 1;
+    if(value &gt;= ds_list_size(items))value=0;   
 }
+
+if(gamepad_button_check_pressed(control,gp_face1)||keyboard_check_pressed(vk_enter)){
+    switch(ds_list_find_value(items,value)){
+        case "add account":
+            event_perform(ev_other,ev_user0);
+        break;
+        
+        case "create account":
+            event_perform(ev_other,ev_user1);
+        break;
+    
+        default:
+            event_perform(ev_other,ev_user2);
+        break;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="12">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Attempt Signin</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>int = instance_create(room_width/2,room_height/2,obj_LobbyPlayer);
+int.control = control;
+int.name = ds_list_find_value(items,value);
+int.localPlayer = true;
+obj_Lobby.localPlayers += 1;
+instance_destroy();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="11">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Create Account</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+instance_destroy();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Add Account</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+instance_destroy();
 </string>
           </argument>
         </arguments>
@@ -246,66 +276,19 @@ if(keyboard_check_pressed(vk_anykey)&amp;&amp;ds_list_find_index(deviceList,"key
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if surface_exists(surf_starfield)
-    {
-      draw_set_blend_mode(bm_add);
-      draw_surface_tiled(surf_starfield,orbit*10,orbit*10);
-      draw_set_blend_mode(bm_normal);
-    };
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>if(menu)exit;
+            <string>draw_set_color(c_black);
+draw_rectangle(rw-width,rh-height,rw+width,rh+height,false);
 
-orbit -= 0.1;
+draw_set_font(fnt_menuFont);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_set_color(c_white);
 
-if(os_type == os_windows || os_type == os_macosx || os == os_linux){
-    if(ds_list_find_index(deviceList,"keyboard")&lt;0){
-        draw_sprite(spr_Devices,0,0,sprite_get_height(spr_Devices));
-    }else{
-        draw_sprite_ext(spr_Devices,0,0,sprite_get_height(spr_Devices),1,1,0,c_lime,1);
-    }
-}
-var gp_num = gamepad_get_device_count();
-for (var i = 0; i &lt; gp_num; i++){
-    if(gamepad_is_connected(i)){
-        if(ds_list_find_index(deviceList,"gamepad"+string(i))&lt;0){
-            draw_sprite(spr_Devices,1,i*sprite_get_width(spr_Devices),0);
-        }else{
-            draw_sprite_ext(spr_Devices,1,i*sprite_get_width(spr_Devices),0,1,1,0,c_lime,1);
-        }
-    }
-}
+draw_rectangle(rw-width,rh-height,rw+width,rh+height,true);
+draw_rectangle(rw-width,rh-height,rw+width,rh-height+rowHeight,true);
 
-draw_sprite(spr_Planet,0,rw,rh);
-for(var i=0;i&lt;ds_list_size(remoteClients);i++){
-    var o = i*(360/ds_list_size(remoteClients))+orbit;
-    var ix = rw+lengthdir_x(rw/2,o);
-    var iy = rh+lengthdir_y(rh/2,o)
-    var l = ds_list_find_value(remoteClients,i);
-    draw_sprite(spr_Planet,0,ix,iy);
-    for(var ii=0;ii&lt;ds_list_size(l);ii++){
-        int = ds_list_find_value(l,ii);
-        int.x = ix;
-        int.y = iy;
-    }
+for(var i=0;i&lt;min(ds_list_size(items)-value,rows);i++){
+    draw_text(rw,rh-height+(i*rowHeight)+(rowHeight/2),ds_list_find_value(items,i+value));
 }
 </string>
           </argument>
