@@ -42,6 +42,7 @@
   <NewExtensions/>
   <sounds name="sound">
     <sound>sound\snd_MainTheme</sound>
+    <sound>sound\snd_shipAmbience</sound>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_Planet</sprite>
