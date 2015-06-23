@@ -86,6 +86,8 @@
   </sprites>
   <backgrounds name="background">
     <background>background\bkg_Menu</background>
+    <background>background\bkg_Cockpit</background>
+    <background>background\bkg_Console</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -122,8 +124,8 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_Title</room>
-    <room>rooms\rm_Lobby</room>
     <room>rooms\rm_Menu</room>
+    <room>rooms\rm_Lobby</room>
     <room>rooms\rm_Concept</room>
     <room>rooms\rm_GameCreation</room>
   </rooms>
