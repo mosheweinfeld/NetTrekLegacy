@@ -13,7 +13,7 @@
     <TextureGroup0>0</TextureGroup0>
   </TextureGroups>
   <For3D>0</For3D>
-  <width>480</width>
-  <height>270</height>
+  <width>960</width>
+  <height>540</height>
   <data>images\bkg_Menu.png</data>
 </background>
