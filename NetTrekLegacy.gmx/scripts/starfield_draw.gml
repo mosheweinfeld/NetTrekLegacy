@@ -1,6 +1,6 @@
-if surface_exists(surf_starfield)
+if surface_exists(argument0)
     {
       draw_set_blend_mode(bm_add);
-      draw_surface_tiled(surf_starfield,-cameraX,-cameraY)
+      draw_surface_tiled(argument0,-cameraX,-cameraY)
       draw_set_blend_mode(bm_normal);
     };

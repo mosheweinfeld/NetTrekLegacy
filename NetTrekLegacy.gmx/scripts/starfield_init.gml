@@ -17,9 +17,9 @@
     var stars_medium_radius    = 2;           // radius in pixels for bigger stars    
     var stars_medium           = stars_small / 8; // count of medium sized stars
 
-    var stars_big_radius       = 10;           // radius in pixels for big stars    
-    var stars_big_have_shape   = true;        // if true, a little plus-shape will be drawn at the center of each big star. looks best stating at sizes from 10    
-    var stars_big              = stars_small / 300; // count of big stars
+    var stars_big_radius       = 2.5;           // radius in pixels for big stars    
+    var stars_big_have_shape   = false;        // if true, a little plus-shape will be drawn at the center of each big star. looks best stating at sizes from 10    
+    var stars_big              = 0;//stars_small / 300; // count of big stars
 
     var stars_color_inner      = c_white;     // color of star center (usually white)
     var stars_color_outer      = c_ltgray;      // color of star edge (usually darker when it should look nice)
@@ -190,5 +190,6 @@
        
        // ends drawing to this surface
        surface_reset_target();
+       return surf_starfield;
        
     }; // end of "create starfield"
