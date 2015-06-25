@@ -59,6 +59,7 @@
   <NewExtensions/>
   <sounds name="sound">
     <sound>sound\snd_MainTheme</sound>
+    <sound>sound\snd_Cockpit</sound>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_Planet</sprite>
@@ -72,6 +73,7 @@
     <sprites name="Menus">
       <sprite>sprites\spr_Start</sprite>
       <sprite>sprites\spr_Devices</sprite>
+      <sprite>sprites\spr_MenuCursor</sprite>
     </sprites>
     <sprites name="GUI">
       <sprite>sprites\spr_RightPanel1</sprite>
@@ -102,13 +104,14 @@
     <font>fonts\fnt_menuFont</font>
   </fonts>
   <objects name="objects">
-    <object>objects\obj_LobbyPlayer</object>
-    <object>objects\obj_Lobby</object>
-    <object>objects\obj_Menu</object>
     <object>objects\obj_Debug</object>
     <objects name="Menus">
+      <object>objects\obj_LobbyPlayer</object>
       <object>objects\obj_Start</object>
       <object>objects\obj_AccountPicker</object>
+      <object>objects\obj_MainMenu</object>
+      <object>objects\obj_Title</object>
+      <object>objects\obj_Lobby</object>
     </objects>
     <objects name="Game">
       <object>objects\obj_GameManager</object>
@@ -123,7 +126,6 @@
     </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\rm_Title</room>
     <room>rooms\rm_Menu</room>
     <room>rooms\rm_Lobby</room>
     <room>rooms\rm_Concept</room>

@@ -1,0 +1,17 @@
+Mesh Server:
+Master server puts players in a synchronized game.
+Players share distrubuted workload and network to confirm
+that each client is standard.
+
+Baton anticipation(tm):
+	When a client creates an object, the object will be created and hosted on another client.
+	Both clients are aware of eachother and expect limited behaviour. Abnormal behaviours or requests
+	are logged on each other's clients and submitted to the master server for confirmation.
+
+NearbyOwnership:
+	Object "ownership" is passed to the nearest Player to that object.
+	Clients should verify against one another
+
+Sector Communion:
+	The map is divided into even fields, each assigned to one player to process.
+	The player shares an adjacent field with another player and verify against eachother.
